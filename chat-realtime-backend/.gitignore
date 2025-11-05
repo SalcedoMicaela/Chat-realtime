@@ -31,3 +31,51 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Archivos de compilación
+/target/
+/bin/
+/out/
+
+# Archivos de IntelliJ IDEA
+/.idea/
+/*.iml
+/*.iws
+
+# Archivos de Eclipse
+/.classpath
+/.project
+/.settings/
+
+# Dependencias de Maven/Gradle descargadas
+/.mvn/wrapper/maven-wrapper.jar
+/.gradle/
+/build/
+
+# Logs
+*.log
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configuración local de Spring Boot
+/application.properties
+/application.yml
+/application-*.properties
+/application-*.yml
+
+# Seguridad: si tienes keys o tokens
+*.key
+*.pem
+*.jks
+
+# Archivos temporales
+*.tmp
+*.swp
+
+# Node modules si tienes frontend
+/node_modules/
+
+# Cloud y Docker
+.env

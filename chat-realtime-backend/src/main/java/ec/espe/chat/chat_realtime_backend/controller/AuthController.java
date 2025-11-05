@@ -1,3 +1,4 @@
+// src/main/java/ec/espe/chat/chat_realtime_backend/controller/AuthController.java
 package ec.espe.chat.chat_realtime_backend.controller;
 
 import ec.espe.chat.chat_realtime_backend.dto.auth.LoginRequest;
@@ -5,7 +6,6 @@ import ec.espe.chat.chat_realtime_backend.dto.auth.LoginResponse;
 import ec.espe.chat.chat_realtime_backend.dto.auth.RegisterRequest;
 import ec.espe.chat.chat_realtime_backend.model.Account;
 import ec.espe.chat.chat_realtime_backend.service.AccountService;
-import ec.espe.chat.chat_realtime_backend.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,24 +15,27 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AccountService accountService;
-    private final JwtUtil jwtUtil;
 
-    public AuthController(AccountService accountService, JwtUtil jwtUtil) {
+    public AuthController(AccountService accountService) {
         this.accountService = accountService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(@Valid @RequestBody RegisterRequest request) {
-        Account acc = accountService.register(request.getUsername(), request.getEmail(), request.getPassword());
-        String token = jwtUtil.generateToken(acc.getId(), acc.getUsername());
-        return ResponseEntity.ok(new LoginResponse(token, acc.getId(), acc.getUsername(), acc.getEmail()));
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+        Account acc = accountService.register(request);
+        // En producción, NO devuelvas el passwordHash
+        return ResponseEntity.status(201).body(new LoginResponse(
+                null, acc.getId(), acc.getUsername(), acc.getEmail(), acc.getRoles()
+        ));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        Account acc = accountService.authenticate(request.getUsername(), request.getPassword());
-        String token = jwtUtil.generateToken(acc.getId(), acc.getUsername());
-        return ResponseEntity.ok(new LoginResponse(token, acc.getId(), acc.getUsername(), acc.getEmail()));
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        Account acc = accountService.authenticate(request);
+        // Aquí podrías generar un JWT real; por ahora un placeholder
+        String fakeToken = "tok_" + acc.getId();
+        return ResponseEntity.ok(new LoginResponse(
+                fakeToken, acc.getId(), acc.getUsername(), acc.getEmail(), acc.getRoles()
+        ));
     }
 }

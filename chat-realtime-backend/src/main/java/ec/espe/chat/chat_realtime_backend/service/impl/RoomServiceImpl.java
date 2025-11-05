@@ -24,8 +24,17 @@ public class RoomServiceImpl implements RoomService {
         r.setName(req.getName());
         r.setType(req.getType());
         r.setOwnerId(ownerId);
+        r.setCreatedBy(ownerId);
+        r.setMaxUploadMb(50);
+
+        // Campos obligatorios adicionales
+        r.setActive(true);
+
+
         return roomRepository.save(r);
     }
+
+
 
     @Override
     public List<Room> findAll() { return roomRepository.findAll(); }
