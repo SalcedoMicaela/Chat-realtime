@@ -23,7 +23,7 @@ public class RoomController {
                                                      @Valid @RequestBody CreateRoomRequest req) {
         String ownerId = (userId == null || userId.isBlank()) ? "owner" : userId;
         Room room = roomService.createRoom(req, ownerId);
-        return ResponseEntity.ok(new CreateRoomResponse(room.getId(), room.getName(), room.getType()));
+        return ResponseEntity.ok(new CreateRoomResponse(room.getId(), room.getName(), room.getType(), room.getPinHash()));
     }
 
     @GetMapping
@@ -34,7 +34,7 @@ public class RoomController {
     @GetMapping("/{roomId}")
     public ResponseEntity<Room> get(@PathVariable String roomId) {
         Room room = roomService.getById(roomId)
-                .orElseThrow(() -> new IllegalArgumentException("Room no encontrada"));
+                .orElseThrow(() -> new IllegalArgumentException("Sala no encontrada"));
         return ResponseEntity.ok(room);
     }
 

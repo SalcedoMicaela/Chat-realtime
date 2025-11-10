@@ -34,6 +34,13 @@ public class Room {
     @Column(name = "max_upload_mb", nullable = false)
     private Integer maxUploadMb;
 
+    @Column(name = "pin_hash", nullable = false, unique = true, length = 20)
+    private String pinHash;
+
+    @Column(name = "anonymous_users", nullable = false)
+    private Integer anonymousUsers;
+
+
     // Constructor vacío para JPA
     public Room() {
         this.id = UUID.randomUUID().toString();
@@ -70,4 +77,21 @@ public class Room {
     public void setMaxUploadMb(Integer maxUploadMb) {
         this.maxUploadMb = maxUploadMb;
     }
+
+    public String getPinHash() {
+        return pinHash;
+    }
+
+    public void setPinHash(String pinHash) {
+        this.pinHash = pinHash;
+    }
+
+    public Integer getAnonymousUsers() {
+        return anonymousUsers;
+    }
+
+    public void setAnonymousUsers(Integer anonymousUsers) {
+        this.anonymousUsers = anonymousUsers;
+    }
+
 }
